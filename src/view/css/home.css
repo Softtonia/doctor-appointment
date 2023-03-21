@@ -1,0 +1,144 @@
+.log-platform .block2 {
+  height: 100vh;
+}
+
+.log-platform .block2 .log-img-col {
+  background-image: url("../../../public/images/log2.png");
+  background-size: cover;
+}
+
+.log-platform .block2 .log-img-col img {
+  height: 100% !important;
+  width: 100%;
+}
+
+.log-platform .block2 .log-form-col {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.admin-system-wrapper {
+  background: #E5E5E5;
+}
+
+.admin-system-sidebar {
+  background-color: #0F172A;
+  color: white;
+  padding: 25px;
+}
+
+.admin-system-sidebar .admin-system-sidebar-content {
+  position: relative;
+  height: 100%;
+  /* width */
+  /* Track */
+  /* Handle */
+  /* Handle on hover */
+}
+
+.admin-system-sidebar .admin-system-sidebar-content .logo-box {
+  margin-bottom: 50px;
+}
+
+.admin-system-sidebar .admin-system-sidebar-content .profile-box img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.admin-system-sidebar .admin-system-sidebar-content ::-webkit-scrollbar {
+  width: 4px;
+}
+
+.admin-system-sidebar .admin-system-sidebar-content ::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.admin-system-sidebar .admin-system-sidebar-content ::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.admin-system-sidebar .admin-system-sidebar-content ::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.admin-system-sidebar .admin-system-sidebar-content .dashboard-menu-box .dashboard-menu-list .dashboard-menu-link {
+  height: 47px;
+  border-radius: 6px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: start;
+  padding: 14px;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 150%;
+  color: #FFFFFF;
+  text-decoration: none;
+  text-align: start;
+}
+
+.admin-system-sidebar .admin-system-sidebar-content .dashboard-menu-box .dashboard-menu-list .dashboard-menu-link .title-tag {
+  margin-left: 10px;
+}
+
+.admin-system-sidebar .admin-system-sidebar-content .dashboard-menu-box .dashboard-menu-list .active, .admin-system-sidebar .admin-system-sidebar-content .dashboard-menu-box .dashboard-menu-list .dashboard-menu-link:hover {
+  background: #4F46E5;
+}
+
+.admin-system-sidebar .admin-system-sidebar-content .my-profile {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 47px;
+  background: #4F46E5;
+  border-radius: 6px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: start;
+  padding: 14px;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 150%;
+  color: #FFFFFF;
+  text-decoration: none;
+  text-align: start;
+}
+
+.admin-system-sidebar .admin-system-sidebar-content .my-profile .title-tag {
+  margin-left: 10px;
+}
+
+.admin-system-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 89px;
+  background: white;
+}
+/*# sourceMappingURL=home.css.map */

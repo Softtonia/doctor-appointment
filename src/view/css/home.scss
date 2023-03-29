@@ -1,5 +1,4 @@
 .log-platform{
-// background-color: red;
     .block2{
       height: 100vh;
         .log-img-col{
@@ -9,11 +8,30 @@
             height: 100% !important;
             width: 100%;
           }
-        }
+        } 
         .log-form-col{
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+    }
+}
+
+@media (max-width:1000px) {
+  .log-platform{
+        .block2{                                                                       
+          background-image: url('../../../public/images/log2.png');
+          background-size: 100%  100%;
+          background-color:  #0f172a;
+          label,.link-tag{
+            color: white !important;
+            }
+            .log-form-col{
+                color: white !important;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
         }
     }
 }
@@ -26,8 +44,7 @@
 .admin-system-sidebar{
   background-color: #0F172A;
   color: white;
-  padding: 25px;  
-
+  padding: 25px 40px !important;  
   .admin-system-sidebar-content{
     position: relative;
     height: 100%;
@@ -36,31 +53,11 @@
     }
     .profile-box{
       img{
-        width: 100px;
-        height: 100px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
       }
     }
-
-    /* width */
-::-webkit-scrollbar {
-  width: 4px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: #f1f1f1; 
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #888; 
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555; 
-}
 
     .dashboard-menu-box{
       // max-height: 350px;
@@ -79,8 +76,6 @@
           color: #FFFFFF;
           text-decoration: none;
           text-align: start;
-          .icon-tag{
-          }
           .title-tag{
             margin-left: 10px;
           }
@@ -110,8 +105,6 @@
       color: #FFFFFF;
       text-decoration: none;
       text-align: start;
-      .icon-tag{       
-      }
       .title-tag{
         margin-left: 10px;
       }
@@ -122,8 +115,124 @@
 .admin-system-header{
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   height: 89px;
   background: white;
+}
+@media (max-width:1000px) {
+
+  .admin-system-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 89px;
+    background: #0F172A;
+    .bell-checkbox{
+      color: white !important;
+    }
+  }
+  
+}
+
+.notification-popup{
+  .card{
+    .card-body{
+        max-height: 500px;
+        overflow-y: scroll;
+    }
+  }
+}
+@media (max-width:768px) {
+  .MuiPaper-root.MuiMenu-paper.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper.css-1ka5eyc-MuiPaper-root-MuiMenu-paper-MuiPopover-paper{
+    width: 100% !important;
+  }
+  .notification-popup{
+    .card{
+      width: 100% !important;
+    }
+  }
+}
+
+.admin-system-content{
+
+  ::-webkit-scrollbar{
+    display: none;
+  }
+  .admin-system-content-source{
+    max-height: 85vh;
+    overflow-y: scroll;
+  }
+}
+
+
+.MuiDataGrid-columnHeaderTitle{
+  font-weight: 600 !important;
+}
+
+
+/* ************ */
+.custom-alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.custom-alert__content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  min-width: 258px;
+  min-height: 131px;
+  /* white */
+  background: #FFFFFF;
+  border-radius: 12px;
+}
+
+.custom-alert__title {
+  margin-top: 0;
+}
+
+.custom-alert__button {
+  background-color: #008CBA;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+
+
+/*  ***** */
+.custome-scroller {
+  /* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #52525B; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #52525B; 
+}
 }

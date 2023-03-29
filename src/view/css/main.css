@@ -17,7 +17,7 @@ Developer: Rahul Sharma
   padding: 0%;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  font-family: var(--font1-fam);
+  font-family: 'Roboto', sans-serif;
 }
 
 :root {
@@ -41,13 +41,12 @@ Developer: Rahul Sharma
   --col18: #B20707;
   --col19: #244D92;
   --col20:#1814CA;
-  --font-fam: 'Roboto', sans-serif;
   /* linear gradient */
   --sliderGradient:   linear-gradient(356deg, rgba(38,65,103,1) 39%, rgba(14,181,130,1) 99%);
   --buttonGradient:   linear-gradient(285deg, rgba(38,65,103,1) 39%, rgba(14,181,130,1) 99%);
   --gettouchGradient: linear-gradient(323deg, rgba(38,65,103,0.9697128851540616) 39%, rgba(14,181,130,0.27503501400560226) 99%);
   /* font family */
-  --font1-fam: 'Inter', sans-serif;
+  --font-fam: 'Roboto', sans-serif;
 }
 
 /* container */
@@ -61,7 +60,7 @@ Developer: Rahul Sharma
 }
 
 .font-2 {
-  font-family: var(--font1-fam);
+  font-family: 'Roboto', sans-serif;
 }
 
 .font-3 {
@@ -82,32 +81,9 @@ Developer: Rahul Sharma
 }
 
 /* border */
-.img-border {
-  border: 6px solid #B0CAA0;
-}
-
-.border-color-1 {
-  border-color: var(--col17) !important;
-}
-
-.border-color-2 {
-  border-color: var(--col1) !important;
-}
-
-.border-color-3 {
-  border-color: var(--col2) !important;
-}
-
-.border-color-4 {
-  border-color: var(--col18) !important;
-}
-
-.border-color-5 {
-  border-color: var(--col19) !important;
-}
-
-.border-6 {
-  border-color: var(--col20) !important;
+/* overflow */
+.overflowX {
+  overflow-x: scroll !important;
 }
 
 /* form */
@@ -178,6 +154,15 @@ label {
   letter-spacing: 0.1em;
 }
 
+.fs-28-500 {
+  font-family: var(--font-fam);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 150%;
+  letter-spacing: 0.1em;
+}
+
 .fs-28-600 {
   font-family: var(--font-fam);
   font-style: normal;
@@ -219,6 +204,15 @@ label {
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
+  line-height: 150%;
+  letter-spacing: 0.1em;
+}
+
+.fs-22-600 {
+  font-family: var(--font-fam);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px;
   line-height: 150%;
   letter-spacing: 0.1em;
 }
@@ -318,7 +312,6 @@ label {
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 150%;
   letter-spacing: 0.1em;
 }
 
@@ -353,6 +346,14 @@ label {
     font-style: normal;
     font-weight: 600;
     font-size: 18px;
+    line-height: 150%;
+    letter-spacing: 0.1em;
+  }
+  .fs-28-500 {
+    font-family: var(--font-fam);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
     line-height: 150%;
     letter-spacing: 0.1em;
   }
@@ -416,7 +417,7 @@ label {
     font-family: var(--font-fam);
     font-style: normal;
     font-weight: 600;
-    font-size: 18px;
+    font-size: 14px;
     line-height: 150%;
     letter-spacing: 0.1em;
   }
@@ -472,8 +473,7 @@ label {
     font-family: var(--font-fam);
     font-style: normal;
     font-weight: 400;
-    font-size: 14px;
-    line-height: 150%;
+    font-size: 10px;
     letter-spacing: 0.1em;
   }
   .fs-12-400 {
@@ -696,7 +696,6 @@ label {
   background-color: var(--col9) !important;
 }
 
-/* font */
 /* buttons */
 .btn-prop {
   background-color: #EE8C1C;
@@ -756,14 +755,6 @@ label {
   font-size: 25px;
 }
 
-.play-btn .play-icon {
-  padding-left: 5px;
-  height: 25px !important;
-  width: 25px !important;
-  -o-object-fit: contain;
-     object-fit: contain;
-}
-
 @media (max-width: 768px) {
   .btn-prop {
     height: 45px;
@@ -780,33 +771,6 @@ label {
   .btn-prop a {
     font-size: 14px;
     text-decoration: none;
-  }
-  .play-btn {
-    background-color: var(--col10);
-    border: 0;
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-  }
-  .play-btn i {
-    color: var(--col2);
-    font-size: 25px;
-  }
-  .play-btn .play-icon {
-    padding-left: 5px;
-    height: 15px !important;
-    width: 15px !important;
-    -o-object-fit: contain;
-       object-fit: contain;
   }
 }
 
@@ -2241,5 +2205,29 @@ html {
     left: 35%;
     text-align: center;
   }
+}
+
+/* mui data */
+.MuiDataGrid-cell:focus {
+  outline: solid transparent 1px !important;
+}
+
+/* sweet alert */
+.swal2-styled.swal2-confirm {
+  border: 0;
+  border-radius: 0.25em;
+  background: initial;
+  background-color: #4F46E5 !important;
+  color: #fff;
+  font-size: 1em;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+  outline: none !important;
+}
+
+.swal2-cancel {
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+  outline: none !important;
 }
 /*# sourceMappingURL=main.css.map */

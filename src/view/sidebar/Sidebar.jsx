@@ -9,7 +9,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
-const Sidebar = () => {
+const Sidebar = (props) => {
     
     const menu_list = [
         {
@@ -41,6 +41,12 @@ const Sidebar = () => {
             title : 'Doctor',
             icon :  <PersonAddAltOutlinedIcon /> ,
             path : '/doctor'
+        },
+        {
+            id : 5,
+            title : 'Patient',
+            icon :  <PersonAddAltOutlinedIcon /> ,
+            path : '/patient'
         }
     ]
 
@@ -64,14 +70,14 @@ const Sidebar = () => {
                 {
                     menu_list?.map((val)=>{
                         return(<>
-                            <li key={val.id} className='dashboard-menu-list mb-1'> <NavLink active className='dashboard-menu-link' to={val.path}> <span className="icon-tag">{val.icon}</span> <span className="title-tag">{val.title}</span></NavLink> </li>
+                            <li onClick={props.closeFn} key={val.id} className='dashboard-menu-list mb-1'> <NavLink  active className='dashboard-menu-link font-2' to={val.path}> <span className="icon-tag">{val.icon}</span> <span className="title-tag">{val.title}</span></NavLink> </li>
                         </>)
                     })
                 }
             </ul>
 
 
-            <NavLink to='/my-profile' className="my-profile cursor-pointer">
+            <NavLink onClick={props.closeFn} to='/my-profile' className="my-profile cursor-pointer">
             <span className='icon-tag'><ManageAccountsIcon /></span> <span className='title-tag'>Profile</span>
             </NavLink>
 

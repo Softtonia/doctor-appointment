@@ -1,7 +1,9 @@
 import React from 'react'
-import { Button, Checkbox, FormControlLabel } from '@mui/material';
+import { Button, Checkbox, FormControlLabel,Select } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
+
+
 export const CustomButton = styled(Button)({
     color: 'darkslategray',
     backgroundColor: '#4F46E5',
@@ -16,6 +18,14 @@ export const CustomButton = styled(Button)({
         color : 'white'
      },
   });
+
+  export const CustomButtonClose = styled(Button)({
+    fontWeight: "500",
+    fontSize: "14px",
+    padding : '8px 20px;',
+    borderRadius:'6px',
+  });
+
   export const CustomButtonTP = styled(Button)({
     backgroundColor: 'trasparent',
     color : '#4F46E5',
@@ -33,12 +43,24 @@ export const CustomButton = styled(Button)({
   export const CustomInputText = styled(TextField)({
 
     fontWeight: "500",
-    height : '44px',
     fontSize: "14px",
-    // padding: 8,
     borderRadius:4,
+    background : 'white',
      '& ::placeholder': {
-        color : 'rgb(255,163,113)'
+        // color : 'rgb(255,163,113)'
+     }
+    
+  });
+
+  export const CustomSelectBox = styled(Select)({
+
+    fontWeight: "500",
+    fontSize: "14px",
+    borderRadius:4,
+    height : '40px',
+    background : 'white',
+     '& ::placeholder': {
+        // color : 'rgb(255,163,113)'
      }
     
   });
@@ -48,7 +70,7 @@ export const CustomButton = styled(Button)({
    
     // fontWeight: "500",
     // height : '44px',
-    // fontSize: "14px",
+    // fontSize: "14px", 
     // padding: 8,
 
     '&$checked': {

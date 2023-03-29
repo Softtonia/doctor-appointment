@@ -9,9 +9,9 @@ const ChangePassword = () => {
   return (
     <>
           <Platform form={
-               <Form className='mx-auto' style={{maxWidth : '475px' , width:'100%'}}>
-        <Form.Group  className=' text-center'>
-        <Form.Label  className='text-uppercase text-center fs-32-500'> Change Password </Form.Label>
+               <Form className='mx-auto' style={{maxWidth : '375px' , width:'100%'}}>
+        <Form.Group  className=''>
+        <Form.Label  className='text-uppercase fs-28-500'> Change Password </Form.Label>
         </Form.Group>
 
 
@@ -25,8 +25,8 @@ const ChangePassword = () => {
         </Form.Group>
         
 
-        <Form.Group  className=' my-3 d-flex justify-content-end'>
-        <CustomButton  variant="contained" size="medium" >Reset</CustomButton>
+        <Form.Group  className=' my-3'>
+        <CustomButton  variant="contained" size="medium" >SET PASSWORD</CustomButton>
         </Form.Group>
 
                 </Form>

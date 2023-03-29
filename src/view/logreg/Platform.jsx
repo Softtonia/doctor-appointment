@@ -11,7 +11,7 @@ const Platform = (props) => {
             </Col>
 
             <Col lg={6} xs={12} className='my-auto'>
-                <Card className ='border-0'>
+                <Card className ='border-0 bg-transparent'>
                 {props.form}
                 </Card>
             </Col>

@@ -18,6 +18,19 @@ import Expertise from './view/expertise/Expertise';
 import Doctor from './view/doctor/Doctor';
 import Preview from './view/dashboardpreview/Preview';
 import MyAccount from './view/myaccount/MyAccount';
+
+
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { CookiesProvider } from 'react-cookie';
+import Patient from './view/patient/Patient';
+
+
+
+export const notify = (message) => toast(message);
+
+
 const App = () => {
 
   const location  = useLocation();
@@ -40,6 +53,8 @@ const App = () => {
   <Route path='/change-password' element={<ChangePassword />} />
 </Routes> :
 
+
+<CookiesProvider>
 <Dashboard>
 <Routes>
   <Route path='/department' element={<Department />} />
@@ -50,8 +65,17 @@ const App = () => {
   <Route path='/demo' element={<Demo />} />
   <Route path='/my-profile' element={<MyAccount />} />
 
+  <Route path='/patient' element={<Patient />} />
+
+
+
+
+
 </Routes>
 </Dashboard>
+</CookiesProvider>
+
+
 }
 
 
@@ -60,7 +84,9 @@ const App = () => {
 
 
 
-  
+<ToastContainer />
+
+
     </>
   )
 }

@@ -10,15 +10,18 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import DescriptionIcon from '@mui/icons-material/Description';
 import BackupIcon from '@mui/icons-material/Backup';
 import CloseIcon from '@mui/icons-material/Close';
-import { expertiseApi, expertiseDeleteApi, expertisePostApi, expertisePutApi, expertiseStatusApi } from '../../api/service.api';
+import { categoryApi, categoryDeleteApi, categoryPostApi, categoryPutApi, categoryStatusApi } from '../../api/service.api';
 import { useCookies } from 'react-cookie';
 import { SweetAlert, SweetAlertSingle } from '../../utils/SweetAlert';
+import * as XLSX from 'xlsx';
 import { handleExport, handleExportCsv } from '../../utils/ExportXL';
 
-const Expertise = () => {
+
+const Department = () => {
+
+
+
   const [cookies, setCookie, removeCookie] = useCookies(['token','user_id']);
-
-
   let formRef = useRef();
 
 
@@ -42,10 +45,10 @@ const Expertise = () => {
     ),
   
   },
-    { field: 'name', headerName: 'Expertise Name', width : 550 },
+    { field: 'name', headerName: 'Dept Name', width : 550 },
     { field: 'status', headerName: 'Status', width:140,
     renderCell: (params) => (
-      <span  onClick={() => statusApi(params.id , !params.row.status)} style={{ color: params.row.status === true ? 'green' : 'red' , backgroundColor: params.row.status === true ? '#DCFCE7' : '#FEE2E2' , border : '1px solid', fontWeight :'bold' , width : '85px' }} className='text-center px-3 py-1 rounded-5 fs-12-400 cursor-pointer'>
+    <span  onClick={() => statusApi(params.id , !params.row.status)} style={{ color: params.row.status === true ? 'green' : 'red' , backgroundColor: params.row.status === true ? '#DCFCE7' : '#FEE2E2' , border : '1px solid', fontWeight :'bold' , width : '85px' }} className='text-center px-3 py-1 rounded-5 fs-12-400 cursor-pointer'>
       {params.row.status === true ? 'Active' : 'Draft'}
     </span>
     ),
@@ -54,17 +57,50 @@ const Expertise = () => {
     { field: 'action', headerName: 'Action', width:140 ,
          renderCell: (params) => (
           <>
-          <IconButton onClick={() => handleEdit({id : params.id , name : params.row.name, image : params.row.image})}>
-            <Edit fontSize='small' color='primary' />
-          </IconButton>
-          <IconButton onClick={() => {SweetAlert(deleteApi) , did=params.id} }>
-            <Delete fontSize='small' color='error'  />
-          </IconButton>
+            <IconButton onClick={() => handleEdit({id : params.id , name : params.row.name, image : params.row.image})}>
+             <Edit fontSize='small' color='primary' />
+            </IconButton>
+            <IconButton onClick={() => {SweetAlert(deleteApi) , did=params.id} }>
+             <Delete fontSize='small' color='error'  />
+            </IconButton>
         </>
-
          ),
   }
-  ]
+  ] 
+
+
+  const [categoryData , setcategoryData] = useState([]);
+
+  const getApi = async () =>{
+     let res = await categoryApi();
+
+     if(res.status===true){
+       console.log(res.data)
+       setcategoryData(res.data);
+     }
+  }
+
+  useEffect(()=>{
+    getApi();
+
+  }, [])
+  const getRowId = (row) => row._id;
+
+
+
+  /* delete api*/
+  let did = null;
+  const deleteApi = async () =>{
+    let res = await categoryDeleteApi(did,cookies.token);
+    if(res.status===true){
+      getApi();
+      setactionType('list');
+    }
+    else{
+      SweetAlertSingle({title:'Request Failed' , text : res.message , icon : 'warning', showCancelButton:false});
+    }
+  }
+
 
   /* edit api*/
 
@@ -100,10 +136,11 @@ const Expertise = () => {
   }
 
   const editApi = async () =>{
-      let res = await expertisePutApi(EditData , cookies.token);
+      let res = await categoryPutApi(EditData , cookies.token);
       if(res.status===true){
         getApi();
         setactionType('list');
+        SweetAlertSingle({title:'Request Failed' , text : res.message , icon : 'success', showCancelButton:false});
       }
       else{
         SweetAlertSingle({title:'Request Failed' , text : res.message , icon : 'warning', showCancelButton:false});
@@ -114,15 +151,15 @@ const Expertise = () => {
 
   /* post api*/
   const postApi = async () =>{
-    let res = await expertisePostApi(newData , cookies.token);
+    let res = await categoryPostApi(newData , cookies.token);
     if(res.status===true){
       getApi();
       formRef.current.reset();
-      setactionType('list');
-
       setNewData({
         name : "",image : ""
       })
+      setactionType('list');
+      SweetAlertSingle({title:'Request Failed' , text : res.message , icon : 'success', showCancelButton:false});
     }
     else{
       SweetAlertSingle({title:'Request Failed' , text : res.message , icon : 'warning', showCancelButton:false});
@@ -132,7 +169,7 @@ const Expertise = () => {
 
     /* status api*/
     const statusApi = async (id,data) =>{
-      let res = await expertiseStatusApi(id,data , cookies.token);
+      let res = await categoryStatusApi(id,data , cookies.token);
       if(res.status===true){
         getApi();
         setactionType('list');
@@ -144,78 +181,47 @@ const Expertise = () => {
     }
 
 
-   const [expertiseData , setexpertiseData] = useState([]);
-
-   const getApi = async () =>{
-      let res = await expertiseApi();
-
-      if(res.status===true){
-
-        console.log(res.data)
-        setexpertiseData(res.data);
-      }
-   }
-
-   useEffect(()=>{
-    getApi();
-   }, [])
-   const getRowId = (row) => row._id;
+    let [newSearch , setnewSearch] = useState('');
 
 
+  return (
 
-   
-  /* delete api*/
-  let did = null;
-  const deleteApi = async () =>{
-    let res = await expertiseDeleteApi(did,cookies.token);
-    if(res.status===true){
-      getApi();
-      setactionType('list');
-    }
-    else{
-      SweetAlertSingle({title:'Request Failed' , text : res.message , icon : 'warning', showCancelButton:false});
-    }
-  }
-
- 
-   return (
- 
-     
-     <>
-     
-     
-     <Row>
-       <Col xl={3} className=''> <span className="title-box fs-24-500">Expertise Name</span> </Col>
-       <Col xl={9} className ='d-flex flex-lg-row flex-column justify-content-lg-end '> 
+    
+    <>
+    
+    
+    <Row>
+      <Col xl={3} className=''> <span className="title-box fs-24-500">Department Name</span> </Col>
+      <Col xl={9} className ='d-flex flex-lg-row flex-column justify-content-lg-end '> 
       <div className="seach-box">
-        <CustomInputText size='small' style={{  borderTopRightRadius : '0px', borderBottomRightRadius : '0px'  , borderRight : 'none',height:'40px' , background : 'white'}} placeholder='Search here....' />
+        <CustomInputText onChange={(e)=>{setnewSearch(e.target.value)}} size='small' style={{  borderTopRightRadius : '0px', borderBottomRightRadius : '0px'  , borderRight : 'none',height:'40px' , background : 'white'}} placeholder='Search here....' />
         <CustomButton variant='contained' style={{  borderTopLeftRadius : '0', borderBottomLeftRadius : '0' }}> <SearchIcon /> </CustomButton>
       </div>
       <div className="btn-group  my-lg-0 my-3">
-      <CustomButton variant='contained' style={{ height:'40px', width : 'fit-content' }} className='ms-lg-3' startIcon={<InsertDriveFileIcon/>} onClick={()=>{handleExportCsv(expertiseData, 'expertise')}}> CSV </CustomButton>
-      <CustomButton variant='contained' style={{ height:'40px', width : 'fit-content' }} className='ms-lg-3 ms-1' startIcon={<DescriptionIcon/>} onClick={()=>{handleExport(expertiseData, 'expertise.xlsx')}} > Excell </CustomButton>
+      <CustomButton variant='contained' style={{ height:'40px', width : 'fit-content' }} className='ms-lg-3' startIcon={<InsertDriveFileIcon/>} onClick={()=>{handleExportCsv(categoryData, 'departmetn')}}> CSV </CustomButton>
+      <CustomButton variant='contained' style={{ height:'40px', width : 'fit-content' }} className='ms-lg-3 ms-1' startIcon={<DescriptionIcon/>} onClick={()=>{handleExport(categoryData, 'department.xlsx')}} > Excell </CustomButton>
       {actionType==='list' ? <CustomButton onClick={()=>{setactionType('add')}} variant='contained' style={{ height:'40px', width : 'fit-content' }} className='ms-lg-3 ms-1 px-lg-3 px-2' startIcon={<AddIcon/>}> Add new </CustomButton> : null}
       </div>
       </Col>
- 
- 
-       {actionType!=='list' ?  
+
+
+      {actionType!=='list' ?  
+      
+      <Col xs={12} className='my-3'>
        
-       <Col xs={12} className='my-3'>
-        
-        <Row>
-        
-             <Col lg={8}>
+       <Row>
+       
+       <Col lg={8}>
           <Form className='row' ref={formRef} >
             <Col lg={6} className='my-lg-0 my-2'>
             <Form.Group>
-            <Form.Label className='w-100'>Expertise</Form.Label>
+            <Form.Label className='w-100'>Department</Form.Label>
             <CustomInputText size='small' 
             className='w-100' 
-            name='name'
+            name='status'
             defaultValue={actionType==='edit' ? EditData.name : ''} 
             style={{  borderTopRightRadius : '0px', borderBottomRightRadius : '0px'  , borderRight : 'none' , border : '0px' }} 
-            placeholder='Expertise Name'
+            placeholder='Dept Name'
             onChange={(e)=>{actionType==='edit' ? handelUpdate(e)  : handelAdd(e)}}
              />
 
@@ -237,31 +243,23 @@ const Expertise = () => {
             </Form>
 
           </Col>
- 
- 
-           <Col lg={4} className='d-flex justify-content-end align-items-end'>
-           <CustomButtonClose onClick={()=>{setactionType('list')}} variant='contained' color='error' style={{ height:'40px'}} className='ms-3' startIcon={<CloseIcon/>}> Close </CustomButtonClose>
-           </Col>
- 
- 
-        </Row>
-       </Col> 
-       
-       
-       : null }
- 
- 
-       <Col xs={12} className='overflow-hidden my-3'>
-         <CustomTable rows={expertiseData} columns={columns} getRowId={getRowId} />
-       </Col>
- 
- 
- 
-     </Row>
-     
-     
-     </>
-   )
+
+
+          <Col lg={4} className='d-flex justify-content-end align-items-end'>
+          <CustomButtonClose onClick={()=>{setactionType('list')}} variant='contained' color='error' style={{ height:'40px'}} className='ms-3' startIcon={<CloseIcon/>}> Close </CustomButtonClose>
+          </Col>
+       </Row>
+      </Col>       
+      : null }
+
+      <Col xs={12} className='overflow-hidden my-3'>
+        <CustomTable  searchdata={newSearch}  rows={categoryData} columns={columns}  getRowId={getRowId}/>
+      </Col>
+    </Row>
+    
+    
+    </>
+  )
 }
 
-export default Expertise
+export default Department

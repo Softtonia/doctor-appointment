@@ -19,9 +19,7 @@ import { SweetAlert, SweetAlertSingle } from '../../utils/SweetAlert';
 import { handleExport, handleExportCsv } from '../../utils/ExportXL';
 import AlarmAddIcon from '@mui/icons-material/AlarmAdd';
 import { convertToAMPM } from '../../utils/convertDate';
-import AssignDate from './AssignDate';
-import PDFProfileview from '../../utils/PDFProfileview';
-import HPlusMobiledataIcon from '@mui/icons-material/HPlusMobiledata';
+
 
 const Doctor = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['token','user_id']);
@@ -269,8 +267,11 @@ const Doctor = () => {
       setFormFields( JSON.parse(data.education) );
     };
 
+
+
   /* ======== timeslots data ========= */
   const [AssignTimeDataDoc , setAssignTimeDataDoc] = useState([]);
+
   const handleAssignTimeSlot = (data) => {
    setactionType('timeslots')
    setAssignTimeDataDoc(data);
@@ -278,9 +279,9 @@ const Doctor = () => {
  };
 
  const [timeslots , settimeslots] = useState([]);
-//  const [storeAssignData , setstoreAssignData] = useState([]);
+ const [storeAssignData , setstoreAssignData] = useState([]);
 
-// const [SelectedSlots , setSelectedSlots] = useState([]);
+const [SelectedSlots , setSelectedSlots] = useState([]);
 const [selectTimeSlotDate , setselectTimeSlotDate] = useState(new Date());
 
 
@@ -289,69 +290,67 @@ const [selectTimeSlotDate , setselectTimeSlotDate] = useState(new Date());
   let res = await timeslotsApi();
   if(res.status===true) settimeslots(res.data)
 
-  // fetchGetAssign(data);
+  fetchGetAssign(data);
 
 
 };
 
-// const fetchGetAssign = async (props) =>{
-//   console.log(props)
+const fetchGetAssign = async (props) =>{
+  console.log(props)
 
-// const formattedDate = new Date().toISOString().slice(0, 10);
+const formattedDate = new Date().toISOString().slice(0, 10);
 
-// console.log(props,formattedDate,selectTimeSlotDate, AssignTimeDataDoc._id )
-//   let data = {
-//     id : AssignTimeDataDoc._id || props._id,
-//     date : props
-//   }
-//   let res1 = await assigntimeslotsApi(data);
-//   if(res1.status===true && res1.total===1){ setstoreAssignData(JSON.parse(res1.data[0].timeslot_data))}
-//   else{
-//     setstoreAssignData([]);
-//   }
-//   console.log( JSON.parse(res1.data[0]?.timeslot_data)
-//     , 'res1.data[0]')
+console.log(props,formattedDate,selectTimeSlotDate, AssignTimeDataDoc._id )
+  let data = {
+    id : AssignTimeDataDoc._id || props._id,
+    date : props
+  }
+  let res1 = await assigntimeslotsApi(data);
+  if(res1.status===true && res1.total===1){ setstoreAssignData(JSON.parse(res1.data[0].timeslot_data))}
+  else{
+    setstoreAssignData([]);
+  }
+  console.log( JSON.parse(res1.data[0]?.timeslot_data)
+    , 'res1.data[0]')
 
-// }
-
-
+}
 
 
-// const selectTimeSlot = (event, index) => {
-//   const checked = event.target.checked;
-//   const value = event.target.value;
-//   const slot = timeslots[index];
-//   console.log(value ,checked, slot,'valuevaluevalue')
-//   let vesel = storeAssignData;
 
 
-//   if (checked) {
-//     // Add the selected timeslot to the selectedSlots array
-//         setSelectedSlots(prevSelectedSlots => [...prevSelectedSlots, slot]);
-//     // setSelectedSlots([...SelectedSlots, value]);
-//     } 
-    
-//     else {
-//       // Remove the selected timeslot from the selectedSlots array
-//         setSelectedSlots(SelectedSlots.filter(selectedSlot => selectedSlot !== slot));
-//     }
+const selectTimeSlot = (event, index) => {
+  const checked = event.target.checked;
 
-// }
+  const value = event.target.value;
 
-// const postAssignTimeSlot = async () =>{
+  console.log(value ,checked, 'valuevaluevalue')
+
+  const slot = timeslots[index];
+  if (checked) {
+    // Add the selected timeslot to the selectedSlots array
+    // setSelectedSlots(prevSelectedSlots => [...prevSelectedSlots, value]);
+    setSelectedSlots([...SelectedSlots, value]);
+
+  } else {
+    // Remove the selected timeslot from the selectedSlots array
+    setSelectedSlots(SelectedSlots.filter(selectedSlot => selectedSlot !== value));
+  }
+}
+
+const postAssignTimeSlot = async () =>{
   
-//   // console.log( JSON.stringify(SelectedSlots) , selectTimeSlotDate );
-//   let data = {doctor_info:AssignTimeDataDoc._id , date:selectTimeSlotDate , timeslot_data : JSON.stringify(SelectedSlots) }
+  // console.log( JSON.stringify(SelectedSlots) , selectTimeSlotDate );
+  let data = {doctor_info:AssignTimeDataDoc._id , date:selectTimeSlotDate , timeslot_data : JSON.stringify(SelectedSlots) }
 
-//   let res = await assigntimeslotsPostApi(data , cookies.token);
-//   if(res.status===true){
-//     SweetAlertSingle({title:'Time Solts' , text : res.message , icon : 'success', showCancelButton:false});
-//   } 
-//   else{
-//     SweetAlertSingle({title:'Request Failed' , text : res.message , icon : 'warning', showCancelButton:false});
-// }
+  let res = await assigntimeslotsPostApi(data , cookies.token);
+  if(res.status===true){
+    SweetAlertSingle({title:'Time Solts' , text : res.message , icon : 'success', showCancelButton:false});
+  } 
+  else{
+    SweetAlertSingle({title:'Request Failed' , text : res.message , icon : 'warning', showCancelButton:false});
+}
 
-// }
+}
 
   /* ======== status api ========= */
   const statusApi = async (id,data) =>{
@@ -423,7 +422,7 @@ const [selectTimeSlotDate , setselectTimeSlotDate] = useState(new Date());
      ),
    },
  
-     { field: 'action', headerName: 'Action', width:200 ,
+     { field: 'action', headerName: 'Action', width:160 ,
           renderCell: (params) => (
             <>
             <IconButton onClick={() => handleEdit(params.row)}>
@@ -438,9 +437,6 @@ const [selectTimeSlotDate , setselectTimeSlotDate] = useState(new Date());
             </IconButton>
             <IconButton onClick={() => handleAssignTimeSlot(params.row)}>
               <AlarmAddIcon fontSize='small' color='inherit'  />
-            </IconButton>
-            <IconButton title='branch'>
-              <HPlusMobiledataIcon fontSize='small' color='inherit'  />
             </IconButton>
           </>
  
@@ -510,8 +506,9 @@ const [selectTimeSlotDate , setselectTimeSlotDate] = useState(new Date());
 
  
  
-       {actionType==='list' ?
-
+       {actionType==='list' ?  
+  
+       
        <Col xs={12} className='overflow-hidden my-3'>
          <CustomTable rows={formattedRows} columns={columns} getRowId={getRowId} />
        </Col>
@@ -519,41 +516,34 @@ const [selectTimeSlotDate , setselectTimeSlotDate] = useState(new Date());
        :
        actionType==='timeslots' ? 
        <>
+       <p className='my-3'>{`Assign to: ${AssignTimeDataDoc.first_name} ${AssignTimeDataDoc.last_name}`}</p>
 
-       <AssignDate userid={AssignTimeDataDoc._id} first_name={AssignTimeDataDoc.first_name} last_name={AssignTimeDataDoc.last_name} totalslots={timeslots} date={selectTimeSlotDate} token={cookies.token} />
-
-       {/* <p className='my-3'>{`Assign to: ${AssignTimeDataDoc.first_name} ${AssignTimeDataDoc.last_name}`}</p> */}
-{/* 
        <Row>
        <Col xs={12} sm={6} md={4}  className='my-3'>
         <input className='form-control w-100' type='date' size='small'  min={new Date().toISOString().substring(0, 10)} onChange={(e)=>{setselectTimeSlotDate(e.target.value); fetchGetAssign(e.target.value)}} />
        </Col>
-       </Row> */}
-       {/* <Row>
+       </Row>
+       <Row>
    
        <p>Select Aviable Time slots</p>
        {
         timeslots && timeslots?.map((val,index)=>{
-
-          const isChecked = storeAssignData?.some(slot => slot._id === val._id);
-          
-          return( val.status===true && <Col sm={3} xs={6} className='my-2' > <input type='checkbox' className='me-2 cursor-pointer' onChange={(e)=>{selectTimeSlot(e, index)}}
-          defaultChecked={isChecked}
-           /> <span className={`${storeAssignData?.some(slot => slot._id === val._id) ? 'bg-danger' : 'bg-primary' }`}>{`${convertToAMPM(val.start_time)} - ${convertToAMPM(val.end_time)} `}</span> </Col>)
+          return( val.status===true && <Col sm={3} xs={6} className='my-2' > <input type='checkbox' className='me-2 cursor-pointer' value={val._id} onChange={(e)=>{selectTimeSlot(e, index)}}
+          checked={storeAssignData?.some(slot => slot._id === val._id)}
+           />{`${convertToAMPM(val.start_time)} - ${convertToAMPM(val.end_time)} `}</Col>)
         })
        }
 
        <Col xs={12}>
         <CustomButton size='small' className='my-3' variant='contained' onClick={()=>{postAssignTimeSlot()}} >Submit</CustomButton>
        </Col>
-      </Row> */}
+      </Row>
 
       
        </>
 
-
-
-       : 
+       :  
+            
        <Col xs={12} className='my-3'>
 
           <Form className='row'>

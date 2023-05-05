@@ -72,6 +72,11 @@
   border-radius: 50%;
 }
 
+.admin-system-sidebar .admin-system-sidebar-content .dashboard-menu-box {
+  max-height: 350px;
+  overflow-y: scroll;
+}
+
 .admin-system-sidebar .admin-system-sidebar-content .dashboard-menu-box .dashboard-menu-list .dashboard-menu-link {
   height: 47px;
   border-radius: 6px;

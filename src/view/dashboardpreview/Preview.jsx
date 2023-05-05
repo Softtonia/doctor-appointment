@@ -88,7 +88,6 @@ const Preview = () => {
               <MenuItem value='1'>2023/02/01</MenuItem>
               <MenuItem value='2'>2023/02/01</MenuItem>
               <MenuItem value='3'>2023/02/01</MenuItem>
-              <MenuItem value='4'>2023/02/01</MenuItem>
             </CustomSelectBox>
           </Card.Header>
 

@@ -9,22 +9,19 @@ import {Edit, Delete} from '@mui/icons-material';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import DescriptionIcon from '@mui/icons-material/Description';
 import BackupIcon from '@mui/icons-material/Backup';
-
 import CloseIcon from '@mui/icons-material/Close';
-import CustomAlert, { getAlert} from '../../utils/CustomAlert';
-import { categoryPostApi, categoryApi, categoryDeleteApi, categoryPutApi, categoryStatusApi, departmentPostApi, departmentDeleteApi, departmentStatusApi, departmentPutApi, departmentApi } from '../../api/service.api';
+import { diseaseApi, diseaseDeleteApi, diseasePostApi, diseasePutApi, diseaseStatusApi } from '../../api/service.api';
 import { useCookies } from 'react-cookie';
-import CustomAlertMui from '../../utils/CustomAlertMui';
 import { SweetAlert, SweetAlertSingle } from '../../utils/SweetAlert';
 import { handleExport, handleExportCsv } from '../../utils/ExportXL';
 
-
-
-const Department = () => {
+const Deases = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['token','user_id']);
 
 
   let formRef = useRef();
+
+
 
   const [EditData , setEditData] = useState();
   const handleEdit = (data) => {
@@ -32,9 +29,12 @@ const Department = () => {
     setEditData(data);
   };
 
+
   const [actionType , setactionType] = useState('list');
+
+  
   const columns =[
-    { field: 'serialNumber', headerName: 'SN.NO', width: 80 },
+    { field: '_id', headerName: 'SN.NO', width: 80 },
     { field: 'image', headerName: 'Icon', width: 120,
   
     renderCell: (params) => (
@@ -42,7 +42,7 @@ const Department = () => {
     ),
   
   },
-    { field: 'name', headerName: 'Department Name', width : 550 },
+    { field: 'name', headerName: 'Disease Name', width : 550 },
     { field: 'status', headerName: 'Status', width:140,
     renderCell: (params) => (
       <span  onClick={() => statusApi(params.id , !params.row.status)} style={{ color: params.row.status === true ? 'green' : 'red' , backgroundColor: params.row.status === true ? '#DCFCE7' : '#FEE2E2' , border : '1px solid', fontWeight :'bold' , width : '85px' }} className='text-center px-3 py-1 rounded-5 fs-12-400 cursor-pointer'>
@@ -69,7 +69,7 @@ const Department = () => {
   /* edit api*/
 
   let [newData , setNewData] = useState({
-    name : "",image : "",treatments_info : ""
+    name : "",image : ""
   });
 
   const handelAdd = (e) =>{
@@ -85,6 +85,7 @@ const Department = () => {
     setNewData({ ...newData, [name]:value })
   }
 
+
   const handelUpdate = (e) =>{
     let type = e.target.type;
     let name = e.target.name;
@@ -99,14 +100,13 @@ const Department = () => {
   }
 
   const editApi = async () =>{
-      let res = await departmentPutApi(EditData , cookies.token);
+      let res = await diseasePutApi(EditData , cookies.token);
       if(res.status===true){
         getApi();
         setactionType('list');
       }
       else{
         SweetAlertSingle({title:'Request Failed' , text : res.message , icon : 'warning', showCancelButton:false});
-
       }
 
   }
@@ -114,7 +114,7 @@ const Department = () => {
 
   /* post api*/
   const postApi = async () =>{
-    let res = await departmentPostApi(newData , cookies.token);
+    let res = await diseasePostApi(newData , cookies.token);
     if(res.status===true){
       getApi();
       formRef.current.reset();
@@ -126,118 +126,57 @@ const Department = () => {
     }
     else{
       SweetAlertSingle({title:'Request Failed' , text : res.message , icon : 'warning', showCancelButton:false});
-
     }
 
   }
 
-  /* status api*/
-  const statusApi = async (id,data) =>{
-      let res = await departmentStatusApi(id,data , cookies.token);
+    /* status api*/
+    const statusApi = async (id,data) =>{
+      let res = await diseaseStatusApi(id,data , cookies.token);
       if(res.status===true){
         getApi();
         setactionType('list');
       }
       else{
         SweetAlertSingle({title:'Request Failed' , text : res.message , icon : 'warning', showCancelButton:false});
-
       }
   
-  }
+    }
 
 
-
-   const getRowId = (row) => row._id;
-
-   /* get api */
-   const [categoryData , setcategoryData] = useState([]);
-    /* add a virtual Serial Number */
-    const formattedRows = categoryData?.map((row, index) => ({
-      ...row,
-      serialNumber: index + 1,
-    }));
-      /* ends a virtual Serial Number */
-
+   const [deasesData , setdeasesData] = useState([]);
 
    const getApi = async () =>{
-      let res = await departmentApi();
+      let res = await diseaseApi();
 
       if(res.status===true){
-        console.log(res.data)
-        setcategoryData(res.data);
 
+        console.log(res.data)
+        setdeasesData(res.data);
       }
    }
 
    useEffect(()=>{
     getApi();
-
    }, [])
-
-
-    /* delete api */
-    const actionFn = (type,data) =>{
-        switch (type) {
-          case 'delete':
-            setShowAlert(true);
-            setalertMessage('Are You Sure??')
-
-            break;
-
-            case 'edit':
-              alert('ok app googd')
-              break;
-        
-          default:
-            break;
-        }
-     }
+   const getRowId = (row) => row._id;
 
 
 
-     let did = null;
-     const deleteApi = async () =>{
-      let res = await departmentDeleteApi(did,cookies.token);
-      if(res.status===true){
-        getApi();
-        
-      }
-      else{
-        SweetAlertSingle({title:'Request Failed' , text : res.message , icon : 'warning', showCancelButton:false});
-
-      }
+   
+  /* delete api*/
+  let did = null;
+  const deleteApi = async () =>{
+    let res = await diseaseDeleteApi(did,cookies.token);
+    if(res.status===true){
+      getApi();
+      setactionType('list');
     }
-
-
-
-
-     const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false);
-
-     const handleAlert = () => {
-      setIsConfirmationDialogOpen(true);
-    };
-   
-     const handleCancelAlert = () => {
-       setIsConfirmationDialogOpen(false);
-       return setgetConfirm(false);
-     };
-   
-     const handleConfirmAlert = () => {
-       // Call your delete function here
-       setIsConfirmationDialogOpen(false);
-       return setgetConfirm(true);
-
-     };
-
-
-  /* update api */
-  const updateApi = async () =>{
-            let res = await departmentPostApi();
-            if(res.status===true){
-              console.log(res.data)
-              setcategoryData(res.data);
-            }
+    else{
+      SweetAlertSingle({title:'Request Failed' , text : res.message , icon : 'warning', showCancelButton:false});
+    }
   }
+
  
    return (
  
@@ -246,15 +185,15 @@ const Department = () => {
      
      
      <Row>
-       <Col xl={3} className=''> <span className="title-box fs-24-500">Department Name</span> </Col>
+       <Col xl={3} className=''> <span className="title-box fs-24-500">Disease Name</span> </Col>
        <Col xl={9} className ='d-flex flex-lg-row flex-column justify-content-lg-end '> 
       <div className="seach-box">
         <CustomInputText size='small' style={{  borderTopRightRadius : '0px', borderBottomRightRadius : '0px'  , borderRight : 'none',height:'40px' , background : 'white'}} placeholder='Search here....' />
         <CustomButton variant='contained' style={{  borderTopLeftRadius : '0', borderBottomLeftRadius : '0' }}> <SearchIcon /> </CustomButton>
       </div>
       <div className="btn-group  my-lg-0 my-3">
-      <CustomButton variant='contained' style={{ height:'40px', width : 'fit-content' }} className='ms-lg-3' startIcon={<InsertDriveFileIcon/>} onClick={()=>{handleExportCsv(categoryData, 'department')}}> CSV </CustomButton>
-      <CustomButton variant='contained' style={{ height:'40px', width : 'fit-content' }} className='ms-lg-3 ms-1' startIcon={<DescriptionIcon/>} onClick={()=>{handleExport(categoryData, 'department.xlsx')}} > Excell </CustomButton>
+      <CustomButton variant='contained' style={{ height:'40px', width : 'fit-content' }} className='ms-lg-3' startIcon={<InsertDriveFileIcon/>} onClick={()=>{handleExportCsv(deasesData, 'disease')}}> CSV </CustomButton>
+      <CustomButton variant='contained' style={{ height:'40px', width : 'fit-content' }} className='ms-lg-3 ms-1' startIcon={<DescriptionIcon/>} onClick={()=>{handleExport(deasesData , 'disease.xlsx')}} > Excell </CustomButton>
       {actionType==='list' ? <CustomButton onClick={()=>{setactionType('add')}} variant='contained' style={{ height:'40px', width : 'fit-content' }} className='ms-lg-3 ms-1 px-lg-3 px-2' startIcon={<AddIcon/>}> Add new </CustomButton> : null}
       </div>
       </Col>
@@ -266,24 +205,21 @@ const Department = () => {
         
         <Row>
         
-        <Col lg={8}>
+             <Col lg={8}>
           <Form className='row' ref={formRef} >
             <Col lg={6} className='my-lg-0 my-2'>
             <Form.Group>
-            <Form.Label className='w-100'>Department</Form.Label>
+            <Form.Label className='w-100'>Disease</Form.Label>
             <CustomInputText size='small' 
             className='w-100' 
             name='name'
             defaultValue={actionType==='edit' ? EditData.name : ''} 
             style={{  borderTopRightRadius : '0px', borderBottomRightRadius : '0px'  , borderRight : 'none' , border : '0px' }} 
-            placeholder='Department Name'
+            placeholder='Disease Name'
             onChange={(e)=>{actionType==='edit' ? handelUpdate(e)  : handelAdd(e)}}
              />
-
             </Form.Group>
             </Col>
-
-            
             <Col lg={6} className='my-lg-0 my-2'> 
 
             <Form.Group>
@@ -293,12 +229,8 @@ const Department = () => {
             <CustomButton variant='contained'  onClick={()=>{ actionType==='edit' ? editApi() : postApi() }}  className='ms-3' > { actionType==='edit' ? 'update' : 'Add New' } </CustomButton>
             
             </Form.Group>
-
-
           </Col>
-
             </Form>
-
           </Col>
  
  
@@ -315,27 +247,16 @@ const Department = () => {
  
  
        <Col xs={12} className='overflow-hidden my-3'>
-         <CustomTable rows={formattedRows} columns={columns} getRowId={getRowId} />
+         <CustomTable rows={deasesData} columns={columns} getRowId={getRowId} />
        </Col>
  
  
  
      </Row>
-
-     {/* {showAlert && <CustomAlert title={alertMessage} onSure={deleteApi} setShowAlertComp={setShowAlert} onSureBtn={true} />} */}
-     {/* {showAlert && getAlert({title:'Are you sure?', alertFn, setShowAlert } ) }  */}
      
-
-     {isConfirmationDialogOpen && (
-        <CustomAlertMui
-          onConfirm={handleConfirmAlert}
-          onCancel={handleCancelAlert}
-          message="Are you sure you want to delete this item?"
-        />
-      )}
-
+     
      </>
    )
 }
 
-export default Department
+export default Deases

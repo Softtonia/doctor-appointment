@@ -2,34 +2,36 @@ import React from 'react'
 import Swal from 'sweetalert2'
 
 
-export const SweetAlert = (props) =>{
-  console.log(props , 'alert props')
+export const SweetAlert = (callbackFn) =>{
+  console.log(callbackFn , 'alert props');
 
-    return(
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
             icon: 'warning',
+            timer : 3000,
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!'
           }).then((result) => {
             if (result.isConfirmed) {
-
-       
-              props.helpfn;
-              Swal.fire(
-                 {
-                 timer: 3000,
-                title:'Deleted!',
-                message:'Your file has been deleted.',
-                icon:'success'
-                 }
-              )
+              callbackFn();
             }
           })
-    )
+
+}
+
+
+export const SweetAlertSingle = ({title,text,icon,showCancelButton}) =>{
+        Swal.fire({
+            title,
+            text,
+            icon,
+            timer : 3000,
+            showCancelButton
+          })
+
 }
 
 

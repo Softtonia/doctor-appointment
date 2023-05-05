@@ -1,6 +1,6 @@
 import { DataGrid, GridToolbar,GridToolbarContainer,
   GridToolbarExport, } from '@mui/x-data-grid';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Scrollbar from 'react-scrollbar';
 
 import { Box } from '@mui/material';
@@ -11,6 +11,23 @@ const CustomTable = (props) => {
 
 
 
+
+  // const [filterData, setfilterData] = useState([]);
+
+  // useEffect(()=>{
+
+  //   if(props.rows){
+  //     setfilterData(props.rows)
+  //   }
+  // },[props])
+
+  // useEffect(()=>{
+  //         const result = props.rows.filter((eq) => {
+         
+  //           return eq.name.toLowerCase().match(props.searchdata.toLowerCase());
+  //         });
+  //         setfilterData(result);
+  // }, [props.searchdata])
 
 
 
@@ -46,23 +63,52 @@ const CustomTable = (props) => {
 
 
 
-    <Box sx={{ height: '70vh', width: '100%', overflowX:'scroll', background:'white' , borderRadius : '6px' }}>
-      <DataGrid
-      // slots={{ toolbar: GridToolbar }}
+    {/* <Box style={{ height: '70vh', width: '100%', background:'white' , borderRadius : '6px' }}> */}
 
+    <DataGrid
+        rows={props.rows}
+        // rows={formattedRows}
+
+        columns={props.columns}
+        getRowId={props.getRowId}
+        pageSize={15}
+        rowsPerPageOptions={[15]}
+        disableColumnMenu
+        
+        sx={{
+          height : '70vh',
+          background : 'white',
+          overflow : 'scroll',
+          fontSize : '16px',
+    '& .MuiDataGrid-virtualScroller::-webkit-scrollbar': {
+      width: '0.4em',
+    },
+    '& .MuiDataGrid-virtualScroller::-webkit-scrollbar-track': {
+      background: '#f1f1f1',
+    },
+    '& .MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb': {
+      backgroundColor: '#888',
+    },
+    '& .MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb:hover': {
+      background: '#555',
+    },
+  }}
+        disableSelectionOnClick
+        pagination
+    
+      />
+      
+{/* <DataGrid
       getRowId={props.getRowId}
-
-
       slots={{
           toolbar: CustomToolbar,
         }}
-
-
         rows={props.rows}
         columns={props.columns}
         pagination={false}
+
         autoHeight={false}
-        hideFooterRowCount={false}
+        autoWidth={true}
         disableVirtualization={true}
         initialState={{
           pagination: {
@@ -77,10 +123,26 @@ const CustomTable = (props) => {
 
         disableColumnSelector
   disableSelectionOnClick
+  sx={{
+          height: "100%",
+          "&::-webkit-scrollbar": {
+            width: "0.4em",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "#f1f1f1",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "#888",
+          },
+          "&::-webkit-scrollbar-thumb:hover": {
+            background: "#555",
+          },
+        }}
+
+      /> */}
 
 
-      />
-    </Box>
+    {/* </Box> */}
     </>
   )
 }

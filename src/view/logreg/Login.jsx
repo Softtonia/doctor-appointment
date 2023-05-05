@@ -8,6 +8,7 @@ import { CustomButton, CustomCheckbox, CustomInputText } from '../../component/D
 import CustomAlert from '../../utils/CustomAlert'
 import Platform from './Platform';
 import { Cookies, useCookies } from 'react-cookie';
+import { SweetAlertSingle } from '../../utils/SweetAlert'
 
 
 
@@ -65,7 +66,7 @@ const Login = () => {
       
     }
     else{
-      notify('Login failed');
+      SweetAlertSingle({title:'Login Failed' , text : res.message , icon : 'warning', showCancelButton:false});
     }
 
     setspin(false);

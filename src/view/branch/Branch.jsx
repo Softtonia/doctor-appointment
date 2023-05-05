@@ -8,19 +8,15 @@ import { Button, IconButton, Input } from '@mui/material';
 import {Edit, Delete} from '@mui/icons-material';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import DescriptionIcon from '@mui/icons-material/Description';
-import BackupIcon from '@mui/icons-material/Backup';
-
 import CloseIcon from '@mui/icons-material/Close';
-import CustomAlert, { getAlert} from '../../utils/CustomAlert';
-import { categoryPostApi, categoryApi, categoryDeleteApi, categoryPutApi, categoryStatusApi, departmentPostApi, departmentDeleteApi, departmentStatusApi, departmentPutApi, departmentApi } from '../../api/service.api';
+import {branchDeleteApi, branchApi, branchStatusApi, branchPostApi, branchPutApi } from '../../api/service.api';
 import { useCookies } from 'react-cookie';
-import CustomAlertMui from '../../utils/CustomAlertMui';
 import { SweetAlert, SweetAlertSingle } from '../../utils/SweetAlert';
 import { handleExport, handleExportCsv } from '../../utils/ExportXL';
 
 
 
-const Department = () => {
+const Branch = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['token','user_id']);
 
 
@@ -35,14 +31,8 @@ const Department = () => {
   const [actionType , setactionType] = useState('list');
   const columns =[
     { field: 'serialNumber', headerName: 'SN.NO', width: 80 },
-    { field: 'image', headerName: 'Icon', width: 120,
-  
-    renderCell: (params) => (
-      <img src={params.row.image} alt="" srcset="" height='50px' width='50px' />
-    ),
-  
-  },
-    { field: 'name', headerName: 'Department Name', width : 550 },
+    { field: 'name', headerName: 'Branch Name', width: 250},
+    { field: 'address', headerName: 'Branch Address', width: 450},
     { field: 'status', headerName: 'Status', width:140,
     renderCell: (params) => (
       <span  onClick={() => statusApi(params.id , !params.row.status)} style={{ color: params.row.status === true ? 'green' : 'red' , backgroundColor: params.row.status === true ? '#DCFCE7' : '#FEE2E2' , border : '1px solid', fontWeight :'bold' , width : '85px' }} className='text-center px-3 py-1 rounded-5 fs-12-400 cursor-pointer'>
@@ -54,7 +44,7 @@ const Department = () => {
     { field: 'action', headerName: 'Action', width:140 ,
          renderCell: (params) => (
           <>
-          <IconButton onClick={() => handleEdit({id : params.id , name : params.row.name, image : params.row.image})}>
+          <IconButton onClick={() => handleEdit({id : params.id , name : params.row.name, address : params.row.address})}>
             <Edit fontSize='small' color='primary' />
           </IconButton>
           <IconButton onClick={() => {SweetAlert(deleteApi) , did=params.id} }>
@@ -69,7 +59,7 @@ const Department = () => {
   /* edit api*/
 
   let [newData , setNewData] = useState({
-    name : "",image : "",treatments_info : ""
+    name : "",address : ""
   });
 
   const handelAdd = (e) =>{
@@ -99,7 +89,7 @@ const Department = () => {
   }
 
   const editApi = async () =>{
-      let res = await departmentPutApi(EditData , cookies.token);
+      let res = await branchPutApi(EditData , cookies.token);
       if(res.status===true){
         getApi();
         setactionType('list');
@@ -114,15 +104,16 @@ const Department = () => {
 
   /* post api*/
   const postApi = async () =>{
-    let res = await departmentPostApi(newData , cookies.token);
+    let res = await branchPostApi(newData , cookies.token);
     if(res.status===true){
       getApi();
       formRef.current.reset();
       setactionType('list');
 
       setNewData({
-        name : "",image : ""
-      })
+        name : "",address : ""
+      });
+      
     }
     else{
       SweetAlertSingle({title:'Request Failed' , text : res.message , icon : 'warning', showCancelButton:false});
@@ -133,16 +124,14 @@ const Department = () => {
 
   /* status api*/
   const statusApi = async (id,data) =>{
-      let res = await departmentStatusApi(id,data , cookies.token);
+      let res = await branchStatusApi(id,data , cookies.token);
       if(res.status===true){
         getApi();
         setactionType('list');
       }
       else{
         SweetAlertSingle({title:'Request Failed' , text : res.message , icon : 'warning', showCancelButton:false});
-
       }
-  
   }
 
 
@@ -160,47 +149,26 @@ const Department = () => {
 
 
    const getApi = async () =>{
-      let res = await departmentApi();
+      let res = await branchApi();
 
       if(res.status===true){
         console.log(res.data)
         setcategoryData(res.data);
-
       }
    }
 
    useEffect(()=>{
     getApi();
-
    }, [])
 
 
     /* delete api */
-    const actionFn = (type,data) =>{
-        switch (type) {
-          case 'delete':
-            setShowAlert(true);
-            setalertMessage('Are You Sure??')
-
-            break;
-
-            case 'edit':
-              alert('ok app googd')
-              break;
-        
-          default:
-            break;
-        }
-     }
-
-
 
      let did = null;
      const deleteApi = async () =>{
-      let res = await departmentDeleteApi(did,cookies.token);
+      let res = await branchDeleteApi(did,cookies.token);
       if(res.status===true){
         getApi();
-        
       }
       else{
         SweetAlertSingle({title:'Request Failed' , text : res.message , icon : 'warning', showCancelButton:false});
@@ -209,35 +177,6 @@ const Department = () => {
     }
 
 
-
-
-     const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false);
-
-     const handleAlert = () => {
-      setIsConfirmationDialogOpen(true);
-    };
-   
-     const handleCancelAlert = () => {
-       setIsConfirmationDialogOpen(false);
-       return setgetConfirm(false);
-     };
-   
-     const handleConfirmAlert = () => {
-       // Call your delete function here
-       setIsConfirmationDialogOpen(false);
-       return setgetConfirm(true);
-
-     };
-
-
-  /* update api */
-  const updateApi = async () =>{
-            let res = await departmentPostApi();
-            if(res.status===true){
-              console.log(res.data)
-              setcategoryData(res.data);
-            }
-  }
  
    return (
  
@@ -246,7 +185,7 @@ const Department = () => {
      
      
      <Row>
-       <Col xl={3} className=''> <span className="title-box fs-24-500">Department Name</span> </Col>
+       <Col xl={3} className=''> <span className="title-box fs-24-500">Branch Name</span> </Col>
        <Col xl={9} className ='d-flex flex-lg-row flex-column justify-content-lg-end '> 
       <div className="seach-box">
         <CustomInputText size='small' style={{  borderTopRightRadius : '0px', borderBottomRightRadius : '0px'  , borderRight : 'none',height:'40px' , background : 'white'}} placeholder='Search here....' />
@@ -268,30 +207,39 @@ const Department = () => {
         
         <Col lg={8}>
           <Form className='row' ref={formRef} >
-            <Col lg={6} className='my-lg-0 my-2'>
+            <Col lg={4} className='my-lg-0 my-2'>
             <Form.Group>
-            <Form.Label className='w-100'>Department</Form.Label>
+            <Form.Label className='w-100'>Branch Name</Form.Label>
             <CustomInputText size='small' 
             className='w-100' 
             name='name'
             defaultValue={actionType==='edit' ? EditData.name : ''} 
             style={{  borderTopRightRadius : '0px', borderBottomRightRadius : '0px'  , borderRight : 'none' , border : '0px' }} 
-            placeholder='Department Name'
+            placeholder='Branch Name'
             onChange={(e)=>{actionType==='edit' ? handelUpdate(e)  : handelAdd(e)}}
              />
 
             </Form.Group>
             </Col>
+            <Col lg={4} className='my-lg-0 my-2'>
+            <Form.Group>
+            <Form.Label className='w-100'>Branch Address</Form.Label>
+            <CustomInputText size='small' 
+            className='w-100' 
+            name='address'
+            defaultValue={actionType==='edit' ? EditData.address : ''} 
+            style={{  borderTopRightRadius : '0px', borderBottomRightRadius : '0px'  , borderRight : 'none' , border : '0px' }} 
+            placeholder='Branch Address'
+            onChange={(e)=>{actionType==='edit' ? handelUpdate(e)  : handelAdd(e)}}
+             />
 
+            </Form.Group>
+            </Col>
             
-            <Col lg={6} className='my-lg-0 my-2'> 
+            <Col lg={4} className='my-lg-0 my-2 d-flex align-items-end'> 
 
             <Form.Group>
-            <Form.Label className='w-100'>Upload Icon</Form.Label>
-            <input type="file" id="fileInput" style={{ display: 'none' }} name='image' onChange={(e)=>{actionType==='edit' ? handelUpdate(e) : handelAdd(e)}} />
-            <CustomButton variant='contained' onClick={() => document.getElementById('fileInput').click()}  className='' startIcon={<BackupIcon/>}> Upload Icon </CustomButton>
             <CustomButton variant='contained'  onClick={()=>{ actionType==='edit' ? editApi() : postApi() }}  className='ms-3' > { actionType==='edit' ? 'update' : 'Add New' } </CustomButton>
-            
             </Form.Group>
 
 
@@ -318,24 +266,10 @@ const Department = () => {
          <CustomTable rows={formattedRows} columns={columns} getRowId={getRowId} />
        </Col>
  
- 
- 
      </Row>
-
-     {/* {showAlert && <CustomAlert title={alertMessage} onSure={deleteApi} setShowAlertComp={setShowAlert} onSureBtn={true} />} */}
-     {/* {showAlert && getAlert({title:'Are you sure?', alertFn, setShowAlert } ) }  */}
-     
-
-     {isConfirmationDialogOpen && (
-        <CustomAlertMui
-          onConfirm={handleConfirmAlert}
-          onCancel={handleCancelAlert}
-          message="Are you sure you want to delete this item?"
-        />
-      )}
 
      </>
    )
 }
 
-export default Department
+export default Branch

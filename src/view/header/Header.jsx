@@ -4,7 +4,7 @@ import NotificationsOffOutlinedIcon from '@mui/icons-material/NotificationsOffOu
 import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
 
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import MenuIcon from '@mui/icons-material/Menu';
 
@@ -12,6 +12,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Drawer from '@mui/material/Drawer';
 import Sidebar from '../sidebar/Sidebar';
 import { Card } from 'react-bootstrap';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 const Header = () => {
 
@@ -63,6 +64,11 @@ const Header = () => {
 
 
 <NotificationsComponent />
+<NavLink to='/profile/changepassword' className='text-decoration-none text-black'>
+<IconButton className='text-decoration-none text-black'> 
+<ManageAccountsIcon />
+</IconButton>
+</NavLink>
 {/* <Checkbox {...label} icon={<NotificationsActiveOutlinedIcon />} checkedIcon={<NotificationsOffOutlinedIcon />} className='bell-checkbox' /> */}
 <Button onClick={()=>{logout()}}  variant='contained' className='ms-3' color='error' >
 <ExitToAppOutlinedIcon/> </Button>
@@ -161,7 +167,7 @@ const NotificationsComponent = () =>{
 
 
   return(<>
-    <IconButton onClick={handleClick} className='bell-checkbox'><NotificationsActiveOutlinedIcon /></IconButton>
+    <IconButton onClick={handleClick} className='bell-checkbox text-black'><NotificationsActiveOutlinedIcon /></IconButton>
       <Menu 
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
@@ -185,15 +191,14 @@ const NotificationsComponent = () =>{
                   <li className='d-flex justify-content-between my-1' key={val.id}>
                   <div className="post-by d-flex w-80">
                     <img src="/images/user.png" alt=""  className='img-fluid rounded-circle' style={{maxHeight : '50px' , maxWidth : '50px'}} />
+                    
                     <span className='d-flex flex-column ms-1'>
                         <span className='fs-18-600'>{val.title}</span>
                         <span className='fs-14-400 text-secondary'>{val.discription}</span>
                       </span>
-
-                  </div>
+                    </div>
 
                   <span className='fs-14-400 text-secondary'>{val.time}</span>
-                 
                 </li>
 
 

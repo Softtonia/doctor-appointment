@@ -1,0 +1,77 @@
+const Timeslots = () => {
+  const [timeslotsData, setTimeslotsData] = useState([
+    {
+      _id: '644a40cc37e672fad632e03b',
+      start_time: '00:30',
+      end_time: '01:00',
+      status: true,
+    },
+  ]);
+
+  const data = [
+    {
+      _id: '6440fb86b4b85549bac520d3',
+      start_time: '14:29',
+      end_time: '14:36',
+      status: true,
+    },
+    {
+      _id: '64464e320da695db1a8c11a3',
+      start_time: '18:25',
+      end_time: '15:25',
+      status: true,
+    },
+    {
+      _id: '64464f230da695db1a8c11d2',
+      start_time: '17:28',
+      end_time: '20:27',
+      status: true,
+    },
+    {
+      _id: '644a40a337e672fad632e037',
+      start_time: '00:00',
+      end_time: '00:30',
+      status: true,
+    },
+    {
+      _id: '644a40cc37e672fad632e03b',
+      start_time: '00:30',
+      end_time: '01:00',
+      status: true,
+    },
+  ];
+
+  const handleChange = (event, timeslot) => {
+    const isChecked = event.target.checked;
+    if (isChecked) {
+      // Add the timeslot to the timeslotsData array
+      setTimeslotsData([...timeslotsData, timeslot]);
+    } else {
+      // Remove the timeslot from the timeslotsData array
+      const updatedTimeslotsData = timeslotsData.filter(
+        (t) => t._id !== timeslot._id
+      );
+      setTimeslotsData(updatedTimeslotsData);
+    }
+  };
+
+  return (
+    <div>
+      {data.map((timeslot) => (
+        <div key={timeslot._id}>
+          <input
+            type="checkbox"
+            id={timeslot._id}
+            name={timeslot._id}
+            value={timeslot._id}
+            checked={timeslotsData.some((t) => t._id === timeslot._id)}
+            onChange={(event) => handleChange(event, timeslot)}
+          />
+          <label htmlFor={timeslot._id}>
+            {timeslot.start_time} - {timeslot.end_time}
+          </label>
+        </div>
+      ))}
+    </div>
+  );
+};

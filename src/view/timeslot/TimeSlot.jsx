@@ -12,18 +12,17 @@ import BackupIcon from '@mui/icons-material/Backup';
 
 import CloseIcon from '@mui/icons-material/Close';
 import CustomAlert, { getAlert} from '../../utils/CustomAlert';
-import { categoryPostApi, categoryApi, categoryDeleteApi, categoryPutApi, categoryStatusApi, departmentPostApi, departmentDeleteApi, departmentStatusApi, departmentPutApi, departmentApi } from '../../api/service.api';
+import { categoryPostApi, departmentApi, timeslotsApi, timeslotsDeleteApi, timeslotsPostApi, timeslotsPutApi, timeslotsStatusApi, treatmentApi, treatmentDeleteApi, treatmentPostApi, treatmentPutApi, treatmentStatusApi } from '../../api/service.api';
 import { useCookies } from 'react-cookie';
 import CustomAlertMui from '../../utils/CustomAlertMui';
 import { SweetAlert, SweetAlertSingle } from '../../utils/SweetAlert';
 import { handleExport, handleExportCsv } from '../../utils/ExportXL';
+import { convertToAMPM, reverseToAMPM } from '../../utils/convertDate';
 
 
 
-const Department = () => {
+const TimeSlot = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['token','user_id']);
-
-
   let formRef = useRef();
 
   const [EditData , setEditData] = useState();
@@ -32,17 +31,17 @@ const Department = () => {
     setEditData(data);
   };
 
+
   const [actionType , setactionType] = useState('list');
+
   const columns =[
     { field: 'serialNumber', headerName: 'SN.NO', width: 80 },
-    { field: 'image', headerName: 'Icon', width: 120,
-  
-    renderCell: (params) => (
-      <img src={params.row.image} alt="" srcset="" height='50px' width='50px' />
-    ),
-  
+    { field: 'start_time', headerName: 'Start Time', width : 250,
+  renderCell : (params) => convertToAMPM(params.row.start_time)
   },
-    { field: 'name', headerName: 'Department Name', width : 550 },
+    { field: 'end_time', headerName: 'End Time', width : 450,
+    renderCell : (params) => convertToAMPM(params.row.end_time) },
+
     { field: 'status', headerName: 'Status', width:140,
     renderCell: (params) => (
       <span  onClick={() => statusApi(params.id , !params.row.status)} style={{ color: params.row.status === true ? 'green' : 'red' , backgroundColor: params.row.status === true ? '#DCFCE7' : '#FEE2E2' , border : '1px solid', fontWeight :'bold' , width : '85px' }} className='text-center px-3 py-1 rounded-5 fs-12-400 cursor-pointer'>
@@ -54,7 +53,7 @@ const Department = () => {
     { field: 'action', headerName: 'Action', width:140 ,
          renderCell: (params) => (
           <>
-          <IconButton onClick={() => handleEdit({id : params.id , name : params.row.name, image : params.row.image})}>
+          <IconButton onClick={() => handleEdit({id : params.id , start_time : params.row.start_time, end_time : params.row.end_time})}>
             <Edit fontSize='small' color='primary' />
           </IconButton>
           <IconButton onClick={() => {SweetAlert(deleteApi) , did=params.id} }>
@@ -69,7 +68,7 @@ const Department = () => {
   /* edit api*/
 
   let [newData , setNewData] = useState({
-    name : "",image : "",treatments_info : ""
+    start_time : "",end_time : ""
   });
 
   const handelAdd = (e) =>{
@@ -85,6 +84,7 @@ const Department = () => {
     setNewData({ ...newData, [name]:value })
   }
 
+
   const handelUpdate = (e) =>{
     let type = e.target.type;
     let name = e.target.name;
@@ -99,7 +99,7 @@ const Department = () => {
   }
 
   const editApi = async () =>{
-      let res = await departmentPutApi(EditData , cookies.token);
+      let res = await timeslotsPutApi(EditData , cookies.token);
       if(res.status===true){
         getApi();
         setactionType('list');
@@ -114,14 +114,14 @@ const Department = () => {
 
   /* post api*/
   const postApi = async () =>{
-    let res = await departmentPostApi(newData , cookies.token);
+    let res = await timeslotsPostApi(newData , cookies.token);
     if(res.status===true){
       getApi();
       formRef.current.reset();
       setactionType('list');
 
       setNewData({
-        name : "",image : ""
+        start_time : "",end_time : ""
       })
     }
     else{
@@ -131,9 +131,9 @@ const Department = () => {
 
   }
 
-  /* status api*/
-  const statusApi = async (id,data) =>{
-      let res = await departmentStatusApi(id,data , cookies.token);
+    /* status api*/
+    const statusApi = async (id,data) =>{
+      let res = await timeslotsStatusApi(id,data , cookies.token);
       if(res.status===true){
         getApi();
         setactionType('list');
@@ -143,30 +143,25 @@ const Department = () => {
 
       }
   
-  }
+    }
 
 
 
    const getRowId = (row) => row._id;
 
    /* get api */
-   const [categoryData , setcategoryData] = useState([]);
-    /* add a virtual Serial Number */
-    const formattedRows = categoryData?.map((row, index) => ({
-      ...row,
-      serialNumber: index + 1,
-    }));
-      /* ends a virtual Serial Number */
+   const [timeslotsData , settimeslotsData] = useState([]);
 
+    /* add a virtual Serial Number */
+   const formattedRows = timeslotsData?.map((row, index) => ({
+    ...row,
+    serialNumber: index + 1,
+  }));
+    /* ends a virtual Serial Number */
 
    const getApi = async () =>{
-      let res = await departmentApi();
-
-      if(res.status===true){
-        console.log(res.data)
-        setcategoryData(res.data);
-
-      }
+      let res = await timeslotsApi();
+      if(res.status===true){ settimeslotsData(res.data); }
    }
 
    useEffect(()=>{
@@ -176,28 +171,10 @@ const Department = () => {
 
 
     /* delete api */
-    const actionFn = (type,data) =>{
-        switch (type) {
-          case 'delete':
-            setShowAlert(true);
-            setalertMessage('Are You Sure??')
-
-            break;
-
-            case 'edit':
-              alert('ok app googd')
-              break;
-        
-          default:
-            break;
-        }
-     }
-
-
-
+  
      let did = null;
      const deleteApi = async () =>{
-      let res = await departmentDeleteApi(did,cookies.token);
+      let res = await timeslotsDeleteApi(did,cookies.token);
       if(res.status===true){
         getApi();
         
@@ -230,14 +207,6 @@ const Department = () => {
      };
 
 
-  /* update api */
-  const updateApi = async () =>{
-            let res = await departmentPostApi();
-            if(res.status===true){
-              console.log(res.data)
-              setcategoryData(res.data);
-            }
-  }
  
    return (
  
@@ -246,15 +215,15 @@ const Department = () => {
      
      
      <Row>
-       <Col xl={3} className=''> <span className="title-box fs-24-500">Department Name</span> </Col>
+       <Col xl={3} className=''> <span className="title-box fs-24-500">Timeslots</span> </Col>
        <Col xl={9} className ='d-flex flex-lg-row flex-column justify-content-lg-end '> 
       <div className="seach-box">
         <CustomInputText size='small' style={{  borderTopRightRadius : '0px', borderBottomRightRadius : '0px'  , borderRight : 'none',height:'40px' , background : 'white'}} placeholder='Search here....' />
         <CustomButton variant='contained' style={{  borderTopLeftRadius : '0', borderBottomLeftRadius : '0' }}> <SearchIcon /> </CustomButton>
       </div>
       <div className="btn-group  my-lg-0 my-3">
-      <CustomButton variant='contained' style={{ height:'40px', width : 'fit-content' }} className='ms-lg-3' startIcon={<InsertDriveFileIcon/>} onClick={()=>{handleExportCsv(categoryData, 'department')}}> CSV </CustomButton>
-      <CustomButton variant='contained' style={{ height:'40px', width : 'fit-content' }} className='ms-lg-3 ms-1' startIcon={<DescriptionIcon/>} onClick={()=>{handleExport(categoryData, 'department.xlsx')}} > Excell </CustomButton>
+      <CustomButton variant='contained' style={{ height:'40px', width : 'fit-content' }} className='ms-lg-3' startIcon={<InsertDriveFileIcon/>} onClick={()=>{handleExportCsv(timeslotsData, 'treatment')}}> CSV </CustomButton>
+      <CustomButton variant='contained' style={{ height:'40px', width : 'fit-content' }} className='ms-lg-3 ms-1' startIcon={<DescriptionIcon/>} onClick={()=>{handleExport(timeslotsData, 'treatment.xlsx')}} > Excell </CustomButton>
       {actionType==='list' ? <CustomButton onClick={()=>{setactionType('add')}} variant='contained' style={{ height:'40px', width : 'fit-content' }} className='ms-lg-3 ms-1 px-lg-3 px-2' startIcon={<AddIcon/>}> Add new </CustomButton> : null}
       </div>
       </Col>
@@ -266,43 +235,53 @@ const Department = () => {
         
         <Row>
         
-        <Col lg={8}>
+        <Col lg={10}>
           <Form className='row' ref={formRef} >
-            <Col lg={6} className='my-lg-0 my-2'>
+            <Col lg={4} className='my-lg-0 my-2'>
             <Form.Group>
-            <Form.Label className='w-100'>Department</Form.Label>
+            <Form.Label className='w-100'>Start Time</Form.Label>
             <CustomInputText size='small' 
             className='w-100' 
-            name='name'
-            defaultValue={actionType==='edit' ? EditData.name : ''} 
+            name='start_time'
+            type='time'
+            defaultValue={actionType==='edit' ? EditData.start_time :null} 
             style={{  borderTopRightRadius : '0px', borderBottomRightRadius : '0px'  , borderRight : 'none' , border : '0px' }} 
-            placeholder='Department Name'
+            placeholder='Start Time'
             onChange={(e)=>{actionType==='edit' ? handelUpdate(e)  : handelAdd(e)}}
              />
 
             </Form.Group>
             </Col>
-
             
-            <Col lg={6} className='my-lg-0 my-2'> 
-
+            <Col lg={4} className='my-lg-0 my-2'>
             <Form.Group>
-            <Form.Label className='w-100'>Upload Icon</Form.Label>
-            <input type="file" id="fileInput" style={{ display: 'none' }} name='image' onChange={(e)=>{actionType==='edit' ? handelUpdate(e) : handelAdd(e)}} />
-            <CustomButton variant='contained' onClick={() => document.getElementById('fileInput').click()}  className='' startIcon={<BackupIcon/>}> Upload Icon </CustomButton>
-            <CustomButton variant='contained'  onClick={()=>{ actionType==='edit' ? editApi() : postApi() }}  className='ms-3' > { actionType==='edit' ? 'update' : 'Add New' } </CustomButton>
-            
+            <Form.Label className='w-100'>End Time</Form.Label>
+            <CustomInputText size='small' 
+            className='w-100' 
+            type='time'
+            name='end_time'
+            defaultValue={actionType==='edit' ? EditData.end_time :null} 
+            style={{  borderTopRightRadius : '0px', borderBottomRightRadius : '0px'  , borderRight : 'none' , border : '0px' }} 
+            placeholder='End Time'
+            onChange={(e)=>{actionType==='edit' ? handelUpdate(e)  : handelAdd(e)}}
+             />
+
             </Form.Group>
+            </Col>
+            <Col lg={4} className='my-lg-0 my-2 d-flex align-items-end'> 
+
+<Form.Group>
+<CustomButton variant='contained'  onClick={()=>{ actionType==='edit' ? editApi() : postApi() }}  className='ms-3' > { actionType==='edit' ? 'update' : 'Add New' } </CustomButton>
+</Form.Group>
 
 
-          </Col>
-
+</Col>
             </Form>
 
           </Col>
  
  
-           <Col lg={4} className='d-flex justify-content-end align-items-end'>
+           <Col lg={2} className='d-flex justify-content-end align-items-end'>
            <CustomButtonClose onClick={()=>{setactionType('list')}} variant='contained' color='error' style={{ height:'40px'}} className='ms-3' startIcon={<CloseIcon/>}> Close </CustomButtonClose>
            </Col>
  
@@ -317,15 +296,9 @@ const Department = () => {
        <Col xs={12} className='overflow-hidden my-3'>
          <CustomTable rows={formattedRows} columns={columns} getRowId={getRowId} />
        </Col>
- 
- 
- 
+
      </Row>
-
-     {/* {showAlert && <CustomAlert title={alertMessage} onSure={deleteApi} setShowAlertComp={setShowAlert} onSureBtn={true} />} */}
-     {/* {showAlert && getAlert({title:'Are you sure?', alertFn, setShowAlert } ) }  */}
      
-
      {isConfirmationDialogOpen && (
         <CustomAlertMui
           onConfirm={handleConfirmAlert}
@@ -338,4 +311,4 @@ const Department = () => {
    )
 }
 
-export default Department
+export default TimeSlot
